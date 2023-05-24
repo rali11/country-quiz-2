@@ -1,19 +1,16 @@
 <template>
-  <div>
-    <Container tag="section">
-      <h1>Hola mundo</h1>
-    </Container>
-  </div>
+  <Quiz />
 </template>
 
 <script setup>
-import Container from './components/ui/objects/Container.vue';
-
+import Quiz from './components/quiz/Quiz.vue';
 
 </script>
 
 <style lang="scss">
-  .container {
-    text-align: center;
+  #app {
+    height: 100vh;
+    display: flex;
+    padding: 2rem 0;
   }
 </style>
