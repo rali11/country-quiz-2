@@ -1,0 +1,8 @@
+@use "../settings/variables";
+
+a,
+a:active,
+a:visited {
+  color:variables.$text-primary-light;
+  text-decoration: underline;
+}

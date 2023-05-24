@@ -1,0 +1,32 @@
+$_primary-crayola: #F9A826;
+$_primary-indigo: #1D355D;
+$_primary-metallic-blue: #2F527B;
+$_primary-anti-flash-white: #F2F2F2;
+$_primary-white: #FFFFFF;
+$_secondary-slate-blue: rgba(96, 102, 208, 0.7);
+$_secondary-medium-aquamarine: #6FCF97;
+$_hover-crayola: #bd7f1c;
+$_shadow-crayola: rgba(252, 168, 47, 0.4);
+$_success: #60BF88;
+$_error: #EA8282;
+
+$btn-primary: $_primary-crayola;
+$btn-primary-hover: $_hover-crayola;
+$btn-primary-shadow: $_shadow-crayola;
+$btn-secondary-border: $_primary-indigo;
+
+$bg-light:$_primary-anti-flash-white;
+$bg-lighter: $_primary-white;
+
+$choice-quiz: $_secondary-slate-blue;
+$choice-quiz-hover: $_primary-crayola;
+
+$state-success: $_success;
+$state-error: $_error;
+
+$text-primary: $_primary-metallic-blue;
+$text-primary-light: $_primary-anti-flash-white;
+$text-primary-lighter: $_primary-white;
+$text-primary-dark: $_primary-indigo;
+$text-secondary: $_secondary-slate-blue;
+$text-success: $_secondary-medium-aquamarine;
