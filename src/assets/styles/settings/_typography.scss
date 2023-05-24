@@ -1,0 +1,23 @@
+$font-family: 'Poppins', sans-serif;
+$font-family-footer: 'Montserrat', sans-serif;
+
+// Typography scale
+$fs-base: 16;
+
+$_fs-14: calc(14 / $fs-base) + rem;
+$_fs-16: calc(16 / $fs-base) + rem;
+$_fs-18: calc(18 / $fs-base) + rem;
+$_fs-24: calc(24 / $fs-base) + rem;
+$_fs-36: calc(36 / $fs-base) + rem;
+$_fs-48: calc(48 / $fs-base) + rem;
+
+// Typography applications
+$fs-btn: $_fs-18;
+$fs-list: $_fs-18;
+$fs-title-1: $_fs-48;
+$fs-title-2: $_fs-36;
+$fs-title-3: $_fs-24;
+$fs-footer: $_fs-16;
+$fs-body: $_fs-14;
+$fs-icons: $_fs-24;
+$fs-counter: $_fs-24;

@@ -1,0 +1,14 @@
+@use "../settings/variables";
+
+body {
+  color: variables.$text-primary-light;
+  font-family: variables.$font-family;
+  font-size: variables.$fs-body;
+  line-height: 1.8;
+  background-image: url("/img/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow: scroll;
+}
