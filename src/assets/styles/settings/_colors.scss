@@ -10,16 +10,18 @@ $_shadow-crayola: rgba(252, 168, 47, 0.4);
 $_success: #60BF88;
 $_error: #EA8282;
 
-$btn-primary: $_primary-crayola;
-$btn-primary-hover: $_hover-crayola;
-$btn-primary-shadow: $_shadow-crayola;
-$btn-secondary-border: $_primary-indigo;
-
+$bg-btn-primary: $_primary-crayola;
+$bg-btn-primary-hover: $_hover-crayola;
 $bg-light:$_primary-anti-flash-white;
 $bg-lighter: $_primary-white;
+$bg-choice-quiz-hover: $_primary-crayola;
 
-$choice-quiz: $_secondary-slate-blue;
-$choice-quiz-hover: $_primary-crayola;
+$shadow-btn-primary: $_shadow-crayola;
+
+$border-btn-primary: $bg-btn-primary;
+$border-btn-secondary: $_primary-indigo;
+$border-choice-quiz: $_secondary-slate-blue;
+$border-choice-quiz-hover: $_primary-crayola;
 
 $state-success: $_success;
 $state-error: $_error;
@@ -28,5 +30,5 @@ $text-primary: $_primary-metallic-blue;
 $text-primary-light: $_primary-anti-flash-white;
 $text-primary-lighter: $_primary-white;
 $text-primary-dark: $_primary-indigo;
-$text-secondary: $_secondary-slate-blue;
+$text-choice-quiz: $_secondary-slate-blue;
 $text-success: $_secondary-medium-aquamarine;

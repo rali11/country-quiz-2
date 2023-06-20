@@ -14,5 +14,6 @@
     border-radius: 24px;
     background-color: variables.$bg-lighter;
     padding: 2rem;
+    overflow: hidden;
   }
 </style>
