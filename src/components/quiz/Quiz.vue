@@ -7,7 +7,12 @@
         :show="isChoicesShowed"
         @transition-end="isChoicesTransitionEnded = !isChoicesTransitionEnded"
       />
-      <button @click="change">Toggle</button>
+      <Button 
+        role="primary" 
+        @click="change"
+      >
+        Next
+      </Button>
     </Card>
   </Container>
 </template>
@@ -17,6 +22,7 @@
   import Container from '@/components/ui/objects/Container.vue';
   import ListChoice from '../ui/molecules/ListChoice.vue';
   import { onMounted, ref } from 'vue';
+  import Button from '../ui/atoms/Button.vue';
 
   onMounted(() => {
     setTimeout(() => {
