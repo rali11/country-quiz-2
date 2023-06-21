@@ -4,20 +4,20 @@ export class Country {
   #flagImageUrl
 
   constructor(countryName, capitalName, flagImageUrl){
-    this.countryName = countryName
-    this.capitalName = capitalName
-    this.flagImageUrl = flagImageUrl
+    this.#countryName = countryName
+    this.#capitalName = capitalName
+    this.#flagImageUrl = flagImageUrl
   }
 
   getCountryName(){
-    return this.id
+    return this.#countryName
   }
 
   getCapitalName(){
-    return this.capitalName
+    return this.#capitalName
   }
 
   getFlagImageUrl(){
-    return this.flagImageUrl
+    return this.#flagImageUrl
   }
 }
