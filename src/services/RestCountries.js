@@ -6,7 +6,7 @@ export const getCountries = async () => {
     if (!response.ok) throw new Error(response.statusText);
     const json = await response.json();
     return json.map(item => {
-      return new Country(item.name.common, item.capital[0], item.flags.png)
+      return new Country(item.name.common, item.capital?.[0] ?? '' , item.flags.png)
     });
   } catch (error) {
     console.log(error)
