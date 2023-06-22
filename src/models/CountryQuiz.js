@@ -1,12 +1,5 @@
 import { getCountries } from "../services/RestCountries";
-
-const getRandomInt = (max, notAvailableNumbers = []) => {
-  let number = Math.floor(Math.random() * max);
-  while (notAvailableNumbers.find(item => item === number)) {
-    number = Math.floor(Math.random() * max);
-  }
-  return number;
-}
+import { getRandomInt } from "../shared/Utils";
 
 const questionTemplate = {
   CAPITAL_COUNTRY: 'is the capital of',
