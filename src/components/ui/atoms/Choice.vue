@@ -1,6 +1,8 @@
 <template>
   <label ref="choiceDomElement" :class="['choice', choiceStateClass, choiceShowClass]">
-    <slot/>
+    <span>
+      <slot/>
+    </span>
     <input 
       ref="inputDomElement"
       type="radio" 
@@ -72,7 +74,7 @@
 
     position: relative;
     width: 100%;
-    padding: 0.7rem 1.18rem 0.7rem 5.12rem;
+    padding: 0.7rem 4rem 0.7rem 5.12rem;
     display: flex;
     flex-direction: column;
     color: variables.$text-choice-quiz;
@@ -84,6 +86,13 @@
     opacity: 0;
     transform: translateX(-10rem);
     transition: all .5s ease;   
+    
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: auto;
+    }
 
     &:hover {
       background-color: variables.$bg-choice-quiz-hover;
