@@ -1,7 +1,10 @@
-export class FlagQuizChoice {
+import { Choice } from "./Choice"
+
+export class FlagQuizChoice extends Choice{
   #country
   
   constructor(country){
+    super()
     this.#country = country
   }
 
@@ -11,9 +14,5 @@ export class FlagQuizChoice {
 
   getValue(){
     return this.#country.getUrlFlag()
-  }
-
-  isEqualTo(choice){
-    return choice.getValue() === this.getValue()
   }
 }

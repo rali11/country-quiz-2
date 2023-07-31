@@ -1,7 +1,10 @@
-export class CapitalQuizChoice {
+import { Choice } from "./Choice"
+
+export class CapitalQuizChoice extends Choice{
   #country
   
   constructor(country){
+    super()
     this.#country = country
   }
 
@@ -11,9 +14,5 @@ export class CapitalQuizChoice {
 
   getValue(){
     return this.#country.getCapitalName()
-  }
-
-  isEqualTo(choice){
-    return choice.getValue() === this.getValue()
   }
 }
