@@ -1,23 +1,23 @@
 export class Country {
-  #countryName
+  #name
+  #urlFlag
   #capitalName
-  #flagImageUrl
 
-  constructor(countryName, capitalName, flagImageUrl){
-    this.#countryName = countryName
+  constructor(name, urlFlag, capitalName){
+    this.#name = name
+    this.#urlFlag = urlFlag
     this.#capitalName = capitalName
-    this.#flagImageUrl = flagImageUrl
   }
 
-  getCountryName(){
-    return this.#countryName
+  getName(){
+    return this.#name
   }
 
   getCapitalName(){
     return this.#capitalName
   }
 
-  getFlagImageUrl(){
-    return this.#flagImageUrl
+  getUrlFlag(){
+    return this.#urlFlag
   }
 }
