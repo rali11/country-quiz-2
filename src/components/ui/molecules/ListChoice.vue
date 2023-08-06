@@ -15,35 +15,42 @@
 </template>
 
 <script setup>
-  import { ref, watch } from 'vue';
-  import Choice from '../atoms/Choice.vue';
-  
+  import { ref, watch } from 'vue'
+  import Choice from '../atoms/Choice.vue'
+  import { Choice as ModelChoice } from '@/models/Choice/Choice'
+
   const nameListChoice = ref(Date.now().toString())
   const emits = defineEmits(['update:modelValue','transition-end'])
   const props = defineProps({
     modelValue:{
-      type: [String, Number],
+      type: [String, Number, Object],
       default: '',
     },
     choices:{
       type: Array,
       default: () => [],
+      validator(choices){
+        return choices.every(choice => choice instanceof ModelChoice)
+      }
+    },
+    validateChoice:{
+      type: Function,
+      default: () => {}
     },
     show:{
       type: Boolean,
       default:false,
-    }
+    },
   })
   
   const listChoice = ref([])
   const setListChoice = isShow => {
-    listChoice.value = props.choices.map(({label, correct, value}) => (
+    listChoice.value = props.choices.map(choice => (
       {
         state:'',
         show: isShow,
-        label,
-        correct,
-        value,
+        label:choice.getLabel(),
+        value:choice,
       }
     ))
   }
@@ -75,7 +82,7 @@
 
   const checkedEvent = selectedChoice => {
     listChoice.value.forEach(choice => choice.state = 'disabled')
-    const correctChoice = listChoice.value.find(choice => choice.correct === true)
+    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value))
     correctChoice.state = 'success'
     if (selectedChoice !== correctChoice) selectedChoice.state = 'error'
     emits('update:modelValue', selectedChoice.value)
