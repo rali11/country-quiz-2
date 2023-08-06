@@ -1,19 +1,19 @@
 export class Score {
-  #score
+  score
 
   constructor(){
-    this.#score = 0
+    this.score = 0
   }
 
   increase(){
-    this.#score += 1 
+    this.score += 1 
   }
 
   reset(){
-    this.#score = 0
+    this.score = 0
   }
 
   getScore(){
-    return this.#score
+    return this.score
   }
 }
