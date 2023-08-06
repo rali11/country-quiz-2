@@ -16,6 +16,10 @@ export class Quiz {
     return ''
   }
 
+  getChoices(){
+    return this.choices
+  }
+
   validateChoice(selectedChoice){
     if (!(selectedChoice instanceof Choice)) throw new Error('Should be extended from Choice class')
     return this.correctChoice.isEqualTo(selectedChoice)
