@@ -1,18 +1,18 @@
 import { Choice } from "./Choice"
 
 export class CapitalQuizChoice extends Choice{
-  #country
+  country
   
   constructor(country){
     super()
-    this.#country = country
+    this.country = country
   }
 
   getLabel(){
-    return this.#country.getName()
+    return this.country.getName()
   }
 
   getValue(){
-    return this.#country.getCapitalName()
+    return this.country.getCapitalName()
   }
 }
