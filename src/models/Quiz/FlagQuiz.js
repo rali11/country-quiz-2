@@ -5,7 +5,7 @@ export class FlagQuiz extends Quiz{
 
   constructor(choices){
     super(choices)
-    this.correctChoice = choices[0]
+    this.correctChoice = choices[Math.floor(Math.random() * 4)]
   }
 
   getQuestion(){
