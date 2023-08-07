@@ -9,7 +9,7 @@ export class Quiz {
       if(!(choice instanceof Choice)) throw new Error('Should be extended from Choice class')
     })
     this.choices = choices
-    this.correctChoice = choices[0]
+    this.correctChoice = choices[Math.floor(Math.random() * 4)]
   }
 
   getQuestion(){
