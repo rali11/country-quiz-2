@@ -1,4 +1,6 @@
-import { Quiz } from "./Quiz"
+import { Quiz } from './Quiz'
+import Question from '@/components/ui/atoms/Question/FlagQuizQuestion.vue'
+import { h } from 'vue'
 
 export class FlagQuiz extends Quiz{
   correctChoice
@@ -9,8 +11,6 @@ export class FlagQuiz extends Quiz{
   }
 
   getQuestion(){
-    return `<img src='${this.correctChoice.getValue()}'>
-    <br>
-    Which country does this flag belong to?`
+    return () => h(Question, {question:'Which country does this flag belong to?'})
   }
 }
