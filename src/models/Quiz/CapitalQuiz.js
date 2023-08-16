@@ -1,4 +1,6 @@
 import { Quiz } from "./Quiz"
+import Question from '@/components/ui/atoms/Question/CapitalQuizQuestion.vue'
+import { h } from 'vue'
 
 export class CapitalQuiz extends Quiz{
   correctChoice
@@ -9,6 +11,6 @@ export class CapitalQuiz extends Quiz{
   }
 
   getQuestion(){
-    return `${this.correctChoice.getValue()} is the capital of`
+    return () => h(Question, {question:`${this.correctChoice.getValue()} is the capital of`})
   }
 }
