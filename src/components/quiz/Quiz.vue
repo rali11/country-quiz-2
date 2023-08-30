@@ -1,10 +1,14 @@
 <template>
   <Container tag="section">
     <Card class="quiz">
+      <Transition name="fade">
+        <Question v-show="isChoicesShowed"/>
+      </Transition>
       <ListChoice 
         v-model="selectedValue"
         :choices="choices" 
         :show="isChoicesShowed"
+        :validate-choice="validateChoice"
         @transition-end="isChoicesTransitionEnded = !isChoicesTransitionEnded"
       />
       <Button 
@@ -18,50 +22,32 @@
 </template>
 
 <script setup>
-  import Card from '@/components/ui/atoms/Card.vue';
-  import Container from '@/components/ui/objects/Container.vue';
-  import ListChoice from '../ui/molecules/ListChoice.vue';
-  import { onMounted, ref } from 'vue';
-  import Button from '../ui/atoms/Button.vue';
+  import Card from '@/components/ui/atoms/Card.vue'
+  import Container from '@/components/ui/objects/Container.vue'
+  import ListChoice from '../ui/molecules/ListChoice.vue'
+  import Button from '../ui/atoms/Button.vue'
+  import { onMounted, ref} from 'vue'
+  import { useToggleList } from './useToggleList.js'
+  import { useQuiz } from './useQuiz.js'
 
-  onMounted(() => {
-    setTimeout(() => {
-      toggleListChoice()
-    }, 500)
-  })
+  const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
+  const { quiz, choices, Question, getQuiz } = useQuiz()
 
   const selectedValue = ref('');
-  const choices = ref([
-    {label:'Vietnam', correct:false, value:1},
-    {label:'Malaysia', correct:true, value:2},
-    {label:'Sweden', correct:false, value:3},
-    {label:'Austria', correct:false, value:4},
-  ])
+
+  onMounted(async () => {
+    await getQuiz()
+    await toggleListChoice()
+  })
   
   const change = async () => {
     await toggleListChoice()
-    choices.value = [
-      {label:'as', correct:false, value:1},
-      {label:'as', correct:true, value:2},
-      {label:'as', correct:false, value:3},
-      {label:'as', correct:false, value:4},
-    ]
+    getQuiz()
     toggleListChoice()
   }
 
-  const isChoicesShowed = ref(false)
-  const isChoicesTransitionEnded = ref(true)
-  const toggleListChoice = () => {
-    isChoicesTransitionEnded.value = !isChoicesTransitionEnded.value
-    isChoicesShowed.value = !isChoicesShowed.value
-    return new Promise(resolve => {
-      (function loop(){
-        setTimeout(() => {
-          if (isChoicesTransitionEnded.value) return resolve()
-          loop()
-        },100)
-      })()
-    })
+  const validateChoice = choice => { 
+    return quiz.value.validateChoice(choice)
   }
 
 </script>
@@ -77,5 +63,16 @@
       padding-top: 4.35rem;
       padding-bottom: 2rem;
     }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all .5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    transform: translateX(-10rem);
+    opacity: 0;
   }
 </style>
