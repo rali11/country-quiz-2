@@ -2,7 +2,7 @@
   <Quiz />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Quiz from './components/quiz/Quiz.vue';
 
 </script>
