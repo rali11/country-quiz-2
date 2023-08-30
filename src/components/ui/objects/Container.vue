@@ -7,16 +7,10 @@
   </component>
 </template>
 
-<script setup>
-  defineProps({
-    tag: {
-      type: String,
-      default:'div',
-      validator(tag){
-        return ['div','section'].includes(tag);
-      }
-    }
-  })
+<script setup lang="ts">
+  defineProps<{
+    tag: 'div' | 'section'
+  }>()
 </script>
 
 <style lang="scss" scoped>
