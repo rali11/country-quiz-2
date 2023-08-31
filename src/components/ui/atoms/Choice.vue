@@ -17,14 +17,14 @@
   import { computed, onMounted, ref, watch } from 'vue';
 
   interface Props {
-    state: 'success' | 'error' | 'disabled' | ''
+    state: 'success' | 'error' | 'disabled' 
     name: string
     value: unknown
     show: boolean
   }
 
   const props =  withDefaults(defineProps<Props>(),{
-    state:'',
+    state:'disabled',
     name:'list-choice',
     show: false
   })
