@@ -4,55 +4,48 @@
       <slot/>
     </span>
     <input 
-      ref="inputDomElement"
       type="radio" 
       :name="name"
       :value="value"
       :disabled="!!state"
+      :checked="isChecked"
       @change="checkedEvent" 
     >
   </label>
 </template>
-<script setup>
+<script setup lang="ts">
   import { computed, onMounted, ref, watch } from 'vue';
 
-  const props = defineProps({
-    state:{
-      type: String,
-      default:'',
-      validator(state){
-        return ['success','error','disabled',''].includes(state) 
-      },
-    },
-    name: {
-      type: String,
-      default: 'list-choice'
-    },
-    value:{
-      type: [String, Number, Object, Array],
-      default:'',
-    },
-    show:{
-      type: Boolean,
-      default:false
-    }
+  interface Props {
+    state: 'success' | 'error' | 'disabled' | ''
+    name: string
+    value: unknown
+    show: boolean
+  }
+
+  const props =  withDefaults(defineProps<Props>(),{
+    state:'',
+    name:'list-choice',
+    show: false
   })
+
   const emit = defineEmits(['transition-end','checked'])
   
-  const inputDomElement = ref(null)
-
+  const isChecked = ref(false)
   const choiceShowClass = computed(() => props.show ? 'choice--show':'')
-  const choiceDomElement = ref(null);
+  const choiceDomElement = ref<HTMLElement | null>(null);
+
   onMounted(() => {
     watch(() => props.show, newVal => {
       const transitionEndListener = () => {
         emit('transition-end', {isShowTransition: newVal, value: props.value})
-        choiceDomElement.value.removeEventListener('transitionend', transitionEndListener)
+        choiceDomElement.value?.removeEventListener('transitionend', transitionEndListener)
       }
-      choiceDomElement.value.addEventListener('transitionend', transitionEndListener)
+      choiceDomElement.value?.addEventListener('transitionend', transitionEndListener)
     })
+
     watch(() => props.name, () => {
-      inputDomElement.value.checked = false
+      isChecked.value = false
     })
   })
 
