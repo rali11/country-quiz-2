@@ -8,9 +8,14 @@
 </template>
 
 <script setup lang="ts">
-  defineProps<{
+  interface Props {
     tag: 'div' | 'section'
-  }>()
+  }
+
+  withDefaults(defineProps<Props>(),{
+    tag:'div'
+  })
+  
 </script>
 
 <style lang="scss" scoped>
