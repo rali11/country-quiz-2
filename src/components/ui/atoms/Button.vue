@@ -4,15 +4,15 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { computed } from 'vue';
 
-  const props = defineProps({
-    role:{
-      type: String,
-      default: 'primary',
-      validator: role => ['primary','secondary'].includes(role),
-    }
+  interface Props {
+    role: 'primary' | 'secondary'
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    role: 'primary'
   })
 
   const buttonRole = computed(() => `button--${props.role}`)
