@@ -1,5 +1,5 @@
 export class Score {
-  score
+  private score: number
 
   constructor(){
     this.score = 0
