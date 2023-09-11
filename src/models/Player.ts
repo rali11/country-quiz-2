@@ -1,12 +1,14 @@
-export class Player {
-  score
+import { Score } from "./Score"
 
-  constructor(score){
+export class Player {
+  score: Score
+
+  constructor(score: Score){
     this.score = score
   }
 
   increaseScore(){
-    return this.score.increse()
+    return this.score.increase()
   }
 
   getScore(){
