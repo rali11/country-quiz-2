@@ -2,18 +2,16 @@ import { Choice } from "./Choice"
 import type { Country } from "../Country"
 
 export class CapitalQuizChoice extends Choice{
-  country: Country
   
   constructor(country: Country){
-    super()
-    this.country = country
+    super(country)
   }
 
-  getLabel(){
+  getLabel(): string{
     return this.country.name
   }
 
-  getValue(){
+  getValue(): string{
     return this.country.capitalName
   }
 }

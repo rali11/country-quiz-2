@@ -1,4 +1,11 @@
+import type { Country } from "../Country"
+
 export abstract class Choice {
+  protected country: Country
+
+  constructor(country: Country){
+    this.country = country
+  }
 
   abstract getLabel(): string
 
