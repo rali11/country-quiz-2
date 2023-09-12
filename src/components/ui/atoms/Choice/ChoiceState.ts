@@ -1,0 +1,1 @@
+export type ChoiceState = 'success' | 'error' | 'disabled' | ''
