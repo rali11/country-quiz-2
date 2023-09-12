@@ -1,9 +1,10 @@
 <template>
   <div class="list-choice">
-    <Choice v-for="(choice, index) in listChoice" 
-      :key="choice.value"
+    <Choice 
+      v-for="(choice, index) in listChoice" 
+      :key=" index"
       :name="nameListChoice"
-      :value="choice" 
+      :value="choice.value" 
       :state="choice.state"
       :show="choice.show"
       @transition-end="index === listChoice.length-1 && transitionEndListener($event)"
@@ -14,40 +15,39 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, watch } from 'vue'
-  import Choice from '../atoms/Choice.vue'
+  import type { Ref } from 'vue';
+  import Choice from '../../atoms/Choice/Choice.vue';
   import { Choice as ModelChoice } from '@/models/Choice/Choice'
+  import type { ChoiceState } from '../../atoms/Choice/ChoiceState';
+
+  interface Props {
+    modelValue: ModelChoice
+    choices: ModelChoice[]
+    show: boolean
+    validateChoice: (choice: ModelChoice) => boolean
+  }
+
+  interface ListChoice {
+    state: ChoiceState
+    show: boolean
+    label: string
+    value: ModelChoice
+  }
+
+  const props = withDefaults(defineProps<Props>(),{
+    show:false
+  })
 
   const nameListChoice = ref(Date.now().toString())
   const emits = defineEmits(['update:modelValue','transition-end'])
-  const props = defineProps({
-    modelValue:{
-      type: [String, Number, Object],
-      default: '',
-    },
-    choices:{
-      type: Array,
-      default: () => [],
-      validator(choices){
-        return choices.every(choice => choice instanceof ModelChoice)
-      }
-    },
-    validateChoice:{
-      type: Function,
-      default: () => {}
-    },
-    show:{
-      type: Boolean,
-      default:false,
-    },
-  })
-  
-  const listChoice = ref([])
-  const setListChoice = isShow => {
+
+  const listChoice: Ref<ListChoice[]> = ref([])
+  const setListChoice = (isShow: boolean) => {
     listChoice.value = props.choices.map(choice => (
       {
-        state:'',
+        state:'disabled',
         show: isShow,
         label:choice.getLabel(),
         value:choice,
@@ -60,7 +60,7 @@
   })
 
   watch(() => props.show, show => {
-    const toggleListChoice = isShow => {
+    const toggleListChoice = (isShow: boolean) => {
       const nextChoiceToToggle = listChoice.value.find(choice => choice.show !== isShow)
       if (nextChoiceToToggle){
         nextChoiceToToggle.state = 'disabled'
@@ -70,7 +70,7 @@
     }
     toggleListChoice(show)
   })
-  const transitionEndListener = ({isShowTransition}) => {
+  const transitionEndListener = ({isShowTransition}:{isShowTransition: boolean}) => {
     if (isShowTransition) {
       listChoice.value.forEach(choice => choice.state = '')
     } else {
@@ -80,12 +80,14 @@
     emits('transition-end')
   }
 
-  const checkedEvent = selectedChoice => {
+  const checkedEvent = (selectedChoice: ListChoice) => {
     listChoice.value.forEach(choice => choice.state = 'disabled')
-    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value))
-    correctChoice.state = 'success'
-    if (selectedChoice !== correctChoice) selectedChoice.state = 'error'
-    emits('update:modelValue', selectedChoice.value)
+    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value)) 
+    if (correctChoice !== undefined){
+      correctChoice.state = 'success'
+      if (selectedChoice !== correctChoice) selectedChoice.state = 'error'
+      emits('update:modelValue', selectedChoice.value)
+    }
   }
 
 </script>
