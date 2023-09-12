@@ -14,17 +14,19 @@
   </label>
 </template>
 <script setup lang="ts">
+  import type { Choice } from '@/models/Choice/Choice';
+  import type { ChoiceState } from './ChoiceState';
   import { computed, onMounted, ref, watch } from 'vue';
 
   interface Props {
-    state: 'success' | 'error' | 'disabled' 
+    state: ChoiceState
     name: string
-    value: unknown
+    value: Choice
     show: boolean
   }
 
   const props =  withDefaults(defineProps<Props>(),{
-    state:'disabled',
+    state:'',
     name:'list-choice',
     show: false
   })
