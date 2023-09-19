@@ -10,7 +10,7 @@ export const useToggleList = () => {
     return new Promise(resolve => {
       (function loop(){
         setTimeout(() => {
-          if (isChoicesTransitionEnded.value) return resolve()
+          if (isChoicesTransitionEnded.value) return resolve('done')
           loop()
         },100)
       })()
