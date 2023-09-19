@@ -1,14 +1,14 @@
 <template>
   <Container tag="section">
     <Card class="quiz">
-      <Transition name="fade">
-        <Question v-show="isChoicesShowed"/>
-      </Transition>
+      <h3>
+        {{ quiz.getQuestion().question }}
+      </h3>
       <ListChoice 
         v-model="selectedValue"
-        :choices="choices" 
         :show="isChoicesShowed"
-        :validate-choice="validateChoice"
+        :validate-choice="quiz.validateChoice.bind(quiz)"
+        :choices="quiz.getChoices()"
         @transition-end="isChoicesTransitionEnded = !isChoicesTransitionEnded"
       />
       <Button 
@@ -21,22 +21,21 @@
   </Container>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import Card from '@/components/ui/atoms/Card.vue'
   import Container from '@/components/ui/objects/Container.vue'
-  import ListChoice from '../ui/molecules/ListChoice.vue'
+  import ListChoice from '../ui/molecules/ListChoice/ListChoice.vue'
   import Button from '../ui/atoms/Button.vue'
   import { onMounted, ref} from 'vue'
-  import { useToggleList } from './useToggleList.js'
-  import { useQuiz } from './useQuiz.js'
+  import { useToggleList } from './useToggleList'
+  import { useQuiz } from './useQuiz'
 
   const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
-  const { quiz, choices, Question, getQuiz } = useQuiz()
-
-  const selectedValue = ref('');
+  const { quiz, getQuiz } = useQuiz()
+  
+  const selectedValue = ref();
 
   onMounted(async () => {
-    await getQuiz()
     await toggleListChoice()
   })
   
@@ -44,10 +43,6 @@
     await toggleListChoice()
     getQuiz()
     toggleListChoice()
-  }
-
-  const validateChoice = choice => { 
-    return quiz.value.validateChoice(choice)
   }
 
 </script>
