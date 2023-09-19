@@ -1,26 +1,23 @@
 import { Choice } from '@/models/Choice/Choice'
 import type { Question } from '../Question'
 
-export abstract class Quiz {
-  protected choices:Choice[]
-  protected correctChoice:Choice
+export type Choices<T> = [Choice<T>, Choice<T>, Choice<T>, Choice<T>]
 
-  constructor(choices:Choice[]){
-    this.choices = choices
-    this.correctChoice = choices[Math.floor(Math.random() * 4)]
-  }
+export abstract class Quiz<T> {
+  protected abstract choices: Choices<T>
+  protected abstract correctChoice: Choice<T>
 
   abstract getQuestion(): Question
 
-  getChoices(): Choice[]{
+  getChoices(){
     return this.choices
   }
 
-  validateChoice(selectedChoice:Choice){
+  validateChoice(selectedChoice: Choice<T>){
     return this.correctChoice.isEqualTo(selectedChoice)
   }
 
-  isEqualTo(quiz:Quiz){
+  isEqualTo(quiz: Quiz<T>){
     return quiz.validateChoice(this.correctChoice)
   }
 }

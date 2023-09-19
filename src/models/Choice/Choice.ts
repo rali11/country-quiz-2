@@ -1,17 +1,16 @@
-import type { Country } from "../Country"
+export abstract class Choice<T>{
+  protected abstract label: string
+  protected abstract value: T
 
-export abstract class Choice {
-  protected country: Country
-
-  constructor(country: Country){
-    this.country = country
+  getLabel(): string {
+    return this.label
   }
 
-  abstract getLabel(): string
+  getValue(): T {
+    return this.value
+  }
 
-  abstract getValue(): string
-
-  isEqualTo(choice:Choice){
-    return choice.getValue() === this.getValue()
+  isEqualTo(choice: Choice<T>){
+    return choice.getValue() === this.value
   }
 }
