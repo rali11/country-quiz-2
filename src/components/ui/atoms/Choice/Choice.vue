@@ -4,11 +4,11 @@
       <slot/>
     </span>
     <input 
+      ref="radioElement"
       type="radio" 
       :name="name"
       :value="value"
       :disabled="!!state"
-      :checked="isChecked"
       @change="checkedEvent" 
     >
   </label>
@@ -33,9 +33,9 @@
 
   const emit = defineEmits(['transition-end','checked'])
   
-  const isChecked = ref(false)
   const choiceShowClass = computed(() => props.show ? 'choice--show':'')
-  const choiceDomElement = ref<HTMLElement | null>(null);
+  const choiceDomElement = ref<HTMLLabelElement | null>(null);
+  const radioElement =  ref<HTMLInputElement | null>(null)
 
   onMounted(() => {
     watch(() => props.show, newVal => {
@@ -47,7 +47,9 @@
     })
 
     watch(() => props.name, () => {
-      isChecked.value = false
+      if (radioElement.value !== null) {
+        radioElement.value.checked = false
+      }
     })
   })
 
