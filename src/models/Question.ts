@@ -1,4 +1,4 @@
-export interface Question {
+export interface Question{
   question: string
-  urlImg?: string  
+  urlImg?: string
 }

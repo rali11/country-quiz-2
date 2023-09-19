@@ -1,17 +1,18 @@
 import { Choice } from "./Choice"
-import type { Country } from "../Country"
 
-export class FlagQuizChoice extends Choice{
-  
-  constructor(country: Country){
-    super(country)
+export class FlagQuizChoice<T> extends Choice<T>{
+  protected label: string
+  protected value: T
+  private urlFlag: string
+
+  constructor(label: string, value: T, urlFlag: string){
+    super()
+    this.label = label
+    this.value = value
+    this.urlFlag = urlFlag
   }
 
-  getLabel(): string{
-    return this.country.name
-  }
-  
-  getValue(): string{
-    return this.country.urlFlag
+  getUrlFlag(){
+    return this.urlFlag
   }
 }

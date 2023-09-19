@@ -1,16 +1,23 @@
 import { Quiz } from "./Quiz"
-import { Choice } from '@/models/Choice/Choice'
 import type { Question } from "../Question"
+import { getRandomInt } from "@/shared/Utils";
+import type { CapitalQuizChoice } from "../Choice/CapitalQuizChoice";
 
-export class CapitalQuiz extends Quiz{
+export type CapitalQuizChoices<T> = [CapitalQuizChoice<T>,CapitalQuizChoice<T>,CapitalQuizChoice<T>,CapitalQuizChoice<T>]
 
-  constructor(choices:Choice[]){
-    super(choices)
+export class CapitalQuiz<T extends string> extends Quiz<T>{
+  protected choices: CapitalQuizChoices<T>
+  protected correctChoice: CapitalQuizChoice<T>
+
+  constructor(choices:CapitalQuizChoices<T>){   
+    super()
+    this.choices = choices
+    this.correctChoice = choices[getRandomInt(4)]
   }
 
   getQuestion(): Question {
     return {
-      question: `${super.correctChoice.getLabel()} is the capital of`
+      question: `${this.correctChoice.getValue()} is the capital of`
     }
   }
 }

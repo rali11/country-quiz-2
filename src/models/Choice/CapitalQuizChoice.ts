@@ -1,17 +1,12 @@
 import { Choice } from "./Choice"
-import type { Country } from "../Country"
 
-export class CapitalQuizChoice extends Choice{
-  
-  constructor(country: Country){
-    super(country)
-  }
+export class CapitalQuizChoice<T> extends Choice<T>{
+  protected label: string
+  protected value: T
 
-  getLabel(): string{
-    return this.country.name
-  }
-
-  getValue(): string{
-    return this.country.capitalName
+  constructor(label: string, value: T){
+    super()
+    this.label = label
+    this.value = value
   }
 }
