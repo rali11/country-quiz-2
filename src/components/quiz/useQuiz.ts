@@ -1,10 +1,10 @@
 import { ref } from 'vue'
-import { getCountries } from '@/services/RestCountries'
 import { getRandomInt } from '@/shared/Utils'
 import { getCapitalQuiz } from '@/services/GetCapitalQuiz'
 import { getFlagQuiz } from '@/services/GetFlagQuiz'
+import { apiClient } from '@/api-client'
 
-const countries = await getCountries() 
+const countries = await apiClient.country.fetchCountries() 
 
 export function useQuiz() {
   let newQuiz = getRandomInt(2) ? getCapitalQuiz(countries) : getFlagQuiz(countries)
