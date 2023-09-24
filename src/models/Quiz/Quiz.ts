@@ -1,9 +1,9 @@
 import type { Choice } from '@/models/Choice/Choice'
 import type { Question } from '../Question'
 
-export interface Quiz {
+export interface Quiz<T> {
   getQuestion: () => Question
-  getChoices: () => Choice[]
-  validateAnswer: (choice: Choice) => boolean
-  isEqualTo:(quiz:Quiz) => boolean
+  getChoices: () => Choice<T>[]
+  validateAnswer: (answer: Choice<T>) => boolean
+  isEqualTo:(quiz:Quiz<T>) => boolean
 }

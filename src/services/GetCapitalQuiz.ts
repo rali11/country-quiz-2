@@ -10,7 +10,8 @@ export const getCapitalQuiz = (countries: Country[]) => {
     indexCountriesNotAvailable.push(indexCountry)
     return new Choice(countries[indexCountry].name, countries[indexCountry].capitalName)
   }
-  const choices: Choice[] = [getChoice(),getChoice(),getChoice(),getChoice()]
+  
+  const choices = [getChoice(),getChoice(),getChoice(),getChoice()]
   const indexCorrectChoice = getRandomInt(indexCountriesNotAvailable.length)
   
   return new CountryCapitalQuiz(choices, choices[indexCorrectChoice])
