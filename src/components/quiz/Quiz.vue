@@ -29,16 +29,15 @@
   import { onMounted, ref, watch} from 'vue'
   import { useToggleList } from './useToggleList'
   import { useQuiz } from './useQuiz'
-  import { Choice } from '@/models/Choice/Choice'
 
   const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
   const { quiz, getQuiz, listCompletedQuiz } = useQuiz()
 
   const correctAnswers = ref(0)
-  const selectedValue = ref<Choice>();
+  const selectedValue = ref();
 
   watch(() => selectedValue.value, value => {
-    if (value instanceof Choice) {
+    if (value !== undefined) {
       quiz.value.validateAnswer(value) && correctAnswers.value++
     }
   })
@@ -78,4 +77,4 @@
     transform: translateX(-10rem);
     opacity: 0;
   }
-</style>
+</style>@/models/Choice/CountryChoice

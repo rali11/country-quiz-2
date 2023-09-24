@@ -13,19 +13,19 @@
     >
   </label>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" generic="Type">
   import type { Choice } from '@/models/Choice/Choice';
   import type { ChoiceState } from './ChoiceState';
   import { computed, onMounted, ref, watch } from 'vue';
 
-  interface Props {
+  export interface Props<Type> {
     state: ChoiceState
     name: string
-    value: Choice
+    value: Choice<Type>
     show: boolean
   }
 
-  const props =  withDefaults(defineProps<Props>(),{
+  const props =  withDefaults(defineProps<Props<Type>>(),{
     state:'',
     name:'list-choice',
     show: false
@@ -177,3 +177,4 @@
     }
   }
 </style>
+@/models/Choice/CountryChoice

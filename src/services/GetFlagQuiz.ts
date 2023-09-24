@@ -11,7 +11,7 @@ export const getFlagQuiz = (countries: Country[]) => {
     return new Choice(countries[indexCountry].name, countries[indexCountry].name)
   }
 
-  const choices: Choice[] = [getChoice(),getChoice(),getChoice(),getChoice()]
+  const choices = [getChoice(),getChoice(),getChoice(),getChoice()]
   const indexCorrectChoice = getRandomInt(indexCountriesNotAvailable.length)
   const { urlFlag } = countries[indexCountriesNotAvailable[indexCorrectChoice]]
 
