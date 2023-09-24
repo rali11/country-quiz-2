@@ -7,7 +7,7 @@
       ref="radioElement"
       type="radio" 
       :name="name"
-      :value="value"
+      :value="value.getValue()"
       :disabled="!!state"
       @change="checkedEvent" 
     >
