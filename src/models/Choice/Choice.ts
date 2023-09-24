@@ -1,21 +1,21 @@
-export class Choice{
+export class Choice<T> {
   private label: string
-  private value: string
+  private value: T
 
-  constructor(label: string, value: string){
+  constructor(label: string, value: T){
     this.label = label
     this.value = value
   }
-  
-  getLabel(): string {
+
+  getLabel(): string{
     return this.label
   }
 
-  getValue(): string {
+  getValue(): T {
     return this.value
   }
 
-  isEqualTo(choice: Choice): boolean{
-    return choice.getValue() === this.value
+  isEqualTo(choice: Choice<T>): boolean {
+    return this.value === choice.getValue()
   }
 }

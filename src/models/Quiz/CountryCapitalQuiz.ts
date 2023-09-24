@@ -2,16 +2,16 @@ import type { Quiz } from "./Quiz"
 import type { Question } from "../Question"
 import type { Choice } from "../Choice/Choice";
 
-export class CountryCapitalQuiz implements Quiz{
-  private choices: Choice[]
-  private correctChoice: Choice
+export class CountryCapitalQuiz implements Quiz<string>{
+  private choices: Choice<string>[]
+  private correctChoice: Choice<string>
 
-  constructor(choices:Choice[], correctChoice: Choice){   
+  constructor(choices:Choice<string>[], correctChoice: Choice<string>){   
     this.choices = choices
     this.correctChoice = correctChoice
   }
 
-  getChoices(): Choice[] {
+  getChoices(): Choice<string>[] {
     return this.choices
   }  
 
@@ -21,11 +21,11 @@ export class CountryCapitalQuiz implements Quiz{
     }
   }
 
-  validateAnswer(answer: Choice): boolean {
+  validateAnswer(answer: Choice<string>): boolean {
     return this.correctChoice.isEqualTo(answer)
   }
 
-  isEqualTo(quiz: Quiz): boolean {
+  isEqualTo(quiz: Quiz<string>): boolean {
     const { question: question2 } = quiz.getQuestion() 
     const { question } = this.getQuestion()
     return question === question2 && quiz.validateAnswer(this.correctChoice)
