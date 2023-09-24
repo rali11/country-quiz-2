@@ -1,16 +1,21 @@
-export abstract class Choice<T>{
-  protected abstract label: string
-  protected abstract value: T
+export class Choice{
+  private label: string
+  private value: string
 
+  constructor(label: string, value: string){
+    this.label = label
+    this.value = value
+  }
+  
   getLabel(): string {
     return this.label
   }
 
-  getValue(): T {
+  getValue(): string {
     return this.value
   }
 
-  isEqualTo(choice: Choice<T>){
+  isEqualTo(choice: Choice): boolean{
     return choice.getValue() === this.value
   }
 }
