@@ -3,26 +3,28 @@ import { getRandomInt } from '@/shared/Utils'
 import { getCapitalQuiz } from '@/services/GetCapitalQuiz'
 import { getFlagQuiz } from '@/services/GetFlagQuiz'
 import { apiClient } from '@/api-client'
+import type { Quiz } from '@/models/Quiz/Quiz'
 
 const countries = await apiClient.country.fetchCountries() 
 
 export function useQuiz() {
-  let newQuiz = getRandomInt(2) ? getCapitalQuiz(countries) : getFlagQuiz(countries)
-  const quiz = ref(newQuiz) 
-  const completedQuizzes: typeof newQuiz[] = []
-  completedQuizzes.push(newQuiz)
+  const newQuiz: Quiz = getRandomInt(2) ? getCapitalQuiz(countries) : getFlagQuiz(countries)
+  const quiz = ref<Quiz>(newQuiz) 
+  const listCompletedQuiz = ref<Quiz[]>([])
+  listCompletedQuiz.value.push(newQuiz)
   
   const getQuiz = () => {
-    newQuiz = getRandomInt(2) ? getCapitalQuiz(countries) : getFlagQuiz(countries)
-    if (completedQuizzes.length && completedQuizzes.every(quiz => newQuiz.isEqualTo(quiz))) {
+    const newQuiz: Quiz = getRandomInt(2) ? getCapitalQuiz(countries) : getFlagQuiz(countries)
+    if (listCompletedQuiz.value.length && listCompletedQuiz.value.every(quiz => newQuiz.isEqualTo(quiz))) {
       getQuiz()
     }
     quiz.value = newQuiz
-    completedQuizzes.push(newQuiz)
+    listCompletedQuiz.value.push(newQuiz)
   }
 
   return {
     quiz,
     getQuiz,
+    listCompletedQuiz
   }
 }

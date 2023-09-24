@@ -15,35 +15,34 @@
   </div>
 </template>
 
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
   import { ref, watch, type Ref,  } from 'vue'
   import Choice from '../../atoms/Choice/Choice.vue'
   import { Choice as ModelChoice } from '@/models/Choice/Choice'
   import type { ChoiceState } from '../../atoms/Choice/ChoiceState'
-import type { Choices } from '@/models/Quiz/Quiz'
   
-  export interface ListChoice<T> {
+  export interface ListChoice {
     state: ChoiceState
     show: boolean
     label: string
-    value: ModelChoice<T>
+    value: ModelChoice
   }
 
-  export interface Props<T> {
+  export interface Props {
     show: boolean
-    modelValue?: ModelChoice<T>
-    choices: Choices<T>
-    validateChoice: (choice: ModelChoice<T>) => boolean
+    modelValue?: ModelChoice 
+    choices: ModelChoice[]
+    validateChoice: (choice: ModelChoice) => boolean
   }
 
-  const props = withDefaults(defineProps<Props<T>>(),{
+  const props = withDefaults(defineProps<Props>(),{
     show:false,
   })
 
   const nameListChoice = ref(Date.now().toString())
   const emits = defineEmits(['update:modelValue','transition-end'])
 
-  const listChoice: Ref<ListChoice<T>[]> = ref([])
+  const listChoice: Ref<ListChoice[]> = ref([])
   const setListChoice = (isShow: boolean) => {
     listChoice.value = props.choices.map(choice => (
       {
@@ -80,12 +79,12 @@ import type { Choices } from '@/models/Quiz/Quiz'
     emits('transition-end')
   }
 
-  const checkedEvent = (selectedChoice: ModelChoice<T>) => {
+  const checkedEvent = (selectedChoice: ModelChoice) => {
     listChoice.value.forEach(choice => choice.state = 'disabled')
-    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value)) as ListChoice<T>
+    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value)) as ListChoice
     correctChoice.state = 'success'
     if (!selectedChoice.isEqualTo(correctChoice.value)) {
-      (listChoice.value.find(choice => choice.value.isEqualTo(selectedChoice)) as ListChoice<T>).state = 'error'
+      (listChoice.value.find(choice => choice.value.isEqualTo(selectedChoice)) as ListChoice).state = 'error'
     }
     emits('update:modelValue', selectedChoice)
   }
@@ -98,3 +97,4 @@ import type { Choices } from '@/models/Quiz/Quiz'
     width: 100%; 
   }
 </style>
+@/models/Choice/CountryChoice

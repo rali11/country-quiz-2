@@ -7,7 +7,7 @@
       <ListChoice 
         v-model="selectedValue"
         :show="isChoicesShowed"
-        :validate-choice="quiz.validateChoice.bind(quiz)"
+        :validate-choice="quiz.validateAnswer.bind(quiz)"
         :choices="quiz.getChoices()"
         @transition-end="isChoicesTransitionEnded = !isChoicesTransitionEnded"
       />
@@ -26,15 +26,23 @@
   import Container from '@/components/ui/objects/Container.vue'
   import ListChoice from '../ui/molecules/ListChoice/ListChoice.vue'
   import Button from '../ui/atoms/Button.vue'
-  import { onMounted, ref} from 'vue'
+  import { onMounted, ref, watch} from 'vue'
   import { useToggleList } from './useToggleList'
   import { useQuiz } from './useQuiz'
+  import { Choice } from '@/models/Choice/Choice'
 
   const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
-  const { quiz, getQuiz } = useQuiz()
-  
-  const selectedValue = ref();
+  const { quiz, getQuiz, listCompletedQuiz } = useQuiz()
 
+  const correctAnswers = ref(0)
+  const selectedValue = ref<Choice>();
+
+  watch(() => selectedValue.value, value => {
+    if (value instanceof Choice) {
+      quiz.value.validateAnswer(value) && correctAnswers.value++
+    }
+  })
+  
   onMounted(async () => {
     await toggleListChoice()
   })
