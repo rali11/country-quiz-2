@@ -1,14 +1,15 @@
-import { CountryCapitalQuiz} from "@/models/Quiz/CountryCapitalQuiz"
+import { CountryCapitalQuiz } from "@/models"
 import { getRandomInt } from "@/shared/Utils"
-import type { Country } from "@/models/Country"
-import { Choice } from "@/models/Choice/Choice"
+import type { CountryInterface } from "@/models"
+import { CountryChoice } from "@/models"
 
-export const getCapitalQuiz = (countries: Country[]) => {
+export const getCountryCapitalQuiz = (countries: CountryInterface[]): CountryCapitalQuiz => {
   const indexCountriesNotAvailable: number[] =  []
+
   const getChoice = () => {
     const indexCountry = getRandomInt(countries.length, indexCountriesNotAvailable)
     indexCountriesNotAvailable.push(indexCountry)
-    return new Choice(countries[indexCountry].name, countries[indexCountry].capitalName)
+    return new CountryChoice(countries[indexCountry])
   }
   
   const choices = [getChoice(),getChoice(),getChoice(),getChoice()]

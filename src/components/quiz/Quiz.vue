@@ -1,9 +1,7 @@
 <template>
   <Container tag="section">
     <Card class="quiz">
-      <h3>
-        {{ quiz.getQuestion().question }}
-      </h3>
+      <Question :question="quiz.getQuestion()"/>
       <ListChoice 
         v-model="selectedValue"
         :show="isChoicesShowed"
@@ -25,16 +23,18 @@
   import Card from '@/components/ui/atoms/Card.vue'
   import Container from '@/components/ui/objects/Container.vue'
   import ListChoice from '../ui/molecules/ListChoice/ListChoice.vue'
+  import Question from '../ui/atoms/Question.vue'
   import Button from '../ui/atoms/Button.vue'
   import { onMounted, ref, watch} from 'vue'
   import { useToggleList } from './useToggleList'
   import { useQuiz } from './useQuiz'
+  import type { ChoiceInterface } from '@/models'
 
   const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
-  const { quiz, getQuiz, listCompletedQuiz } = useQuiz()
+  const { quiz, nextQuiz, listCompletedQuiz } = useQuiz()
 
   const correctAnswers = ref(0)
-  const selectedValue = ref();
+  const selectedValue = ref<ChoiceInterface>();
 
   watch(() => selectedValue.value, value => {
     if (value !== undefined) {
@@ -48,7 +48,7 @@
   
   const change = async () => {
     await toggleListChoice()
-    getQuiz()
+    nextQuiz()
     toggleListChoice()
   }
 

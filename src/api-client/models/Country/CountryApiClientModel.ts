@@ -1,4 +1,4 @@
-import type { Country } from "@/models/Country";
+import type { CountryInterface } from "@/models/Country/CountryInterface";
 import type { CountryApiClientInterface } from "./CountryApiClientInterface";
 import type { CountryApiClientEndpoints, CountryApiClientOptions } from "./CountryApiClientOptionsInterface";
 
@@ -9,7 +9,7 @@ export class CountryApiClientModel implements CountryApiClientInterface {
     this.endpoints = options.endpoints
   }
 
-  async fetchCountries(): Promise<Country[]>{
+  async fetchCountries(): Promise<CountryInterface[]>{
     return await this.endpoints.fetchCountries()
   }
 }
