@@ -1,5 +1,5 @@
 import type { ApiClientInterface } from "./models";
-import { apiRestCountriesClient } from "./rest-countries";
+import { apiRestCountriesClient } from "./api-rest-countries";
 import { apiMockCountriesClient } from "./mock";
 
 const apiClient: ApiClientInterface = apiRestCountriesClient
