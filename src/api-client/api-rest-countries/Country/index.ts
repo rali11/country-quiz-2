@@ -1,10 +1,10 @@
 import type { RESTCountries } from "@/.d.ts";
 import { type CountryApiClientInterface, CountryApiClientModel, type CountryApiClientOptions } from "@/api-client/models";
-import type { Country } from "@/models/Country";
+import type { CountryInterface } from "@/models/Country/CountryInterface";
 
 const options: CountryApiClientOptions = {
   endpoints: {
-    async fetchCountries(): Promise<Country[]>{
+    async fetchCountries(): Promise<CountryInterface[]>{
       const response = await fetch('https://restcountries.com/v3.1/all');
       if (!response.ok) throw new Error(response.statusText);
       const json = await response.json() as RESTCountries[];
@@ -13,7 +13,7 @@ const options: CountryApiClientOptions = {
   }
 }
 
-function getListCountries(item: RESTCountries): Country{
+const getListCountries = (item: RESTCountries): CountryInterface =>{
   return {
     name:item.name.common,
     urlFlag:item.flags.png,
@@ -21,7 +21,7 @@ function getListCountries(item: RESTCountries): Country{
   }
 }
 
-function filterCapital(item: RESTCountries): boolean {
+const filterCapital = (item: RESTCountries): boolean => {
   return item.capital !== undefined
 }
 

@@ -4,45 +4,43 @@
       v-for="(choice, index) in listChoice" 
       :key=" index"
       :name="nameListChoice"
-      :value="choice.value" 
+      :model="choice.value" 
       :state="choice.state"
       :show="choice.show"
       @transition-end="index === listChoice.length-1 && transitionEndListener($event)"
       @checked="checkedEvent"
-    >
-      {{ choice.label }}
-    </Choice>
+    />
   </div>
 </template>
 
-<script setup lang="ts" generic="Type">
+<script setup lang="ts">
   import { ref, watch, type Ref,  } from 'vue'
   import Choice from '../../atoms/Choice/Choice.vue'
-  import type { Choice as ModelChoice } from '@/models/Choice/Choice'
+  import type { ChoiceInterface as ModelChoice } from '@/models';
   import type { ChoiceState } from '../../atoms/Choice/ChoiceState'
   
-  export interface ListChoice<Type> {
+  interface ListChoice {
     state: ChoiceState
     show: boolean
     label: string
-    value: ModelChoice<Type>
+    value: ModelChoice
   }
 
-  export interface Props<Type> {
+  interface Props {
     show: boolean
-    modelValue?: ModelChoice<Type> 
-    choices: ModelChoice<Type>[]
-    validateChoice: (choice: ModelChoice<Type>) => boolean
+    modelValue?: ModelChoice
+    choices: ModelChoice[]
+    validateChoice: (choice: ModelChoice) => boolean
   }
 
-  const props = withDefaults(defineProps<Props<Type>>(),{
+  const props = withDefaults(defineProps<Props>(),{
     show:false,
   })
 
   const nameListChoice = ref(Date.now().toString())
   const emits = defineEmits(['update:modelValue','transition-end'])
 
-  const listChoice: Ref<ListChoice<Type>[]> = ref([])
+  const listChoice: Ref<ListChoice[]> = ref([])
   const setListChoice = (isShow: boolean) => {
     listChoice.value = props.choices.map(choice => (
       {
@@ -79,12 +77,12 @@
     emits('transition-end')
   }
 
-  const checkedEvent = (selectedChoice: ModelChoice<Type>) => {
+  const checkedEvent = (selectedChoice: ModelChoice) => {
     listChoice.value.forEach(choice => choice.state = 'disabled')
-    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value)) as ListChoice<Type>
+    const correctChoice = listChoice.value.find(choice => props.validateChoice(choice.value)) as ListChoice
     correctChoice.state = 'success'
     if (!selectedChoice.isEqualTo(correctChoice.value)) {
-      (listChoice.value.find(choice => choice.value.isEqualTo(selectedChoice)) as ListChoice<Type>).state = 'error'
+      (listChoice.value.find(choice => choice.value.isEqualTo(selectedChoice)) as ListChoice).state = 'error'
     }
     emits('update:modelValue', selectedChoice)
   }

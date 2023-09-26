@@ -1,31 +1,31 @@
 <template>
   <label ref="choiceDomElement" :class="['choice', choiceStateClass, choiceShowClass]">
     <span>
-      <slot/>
+      {{ model.getLabel() }}
     </span>
     <input 
       ref="radioElement"
       type="radio" 
       :name="name"
-      :value="value.getValue()"
+      :value="model.getValue()"
       :disabled="!!state"
       @change="checkedEvent" 
     >
   </label>
 </template>
-<script setup lang="ts" generic="Type">
-  import type { Choice } from '@/models/Choice/Choice';
+<script setup lang="ts">
+  import type { ChoiceInterface } from '@/models';
   import type { ChoiceState } from './ChoiceState';
   import { computed, onMounted, ref, watch } from 'vue';
 
-  export interface Props<Type> {
+  interface Props {
     state: ChoiceState
     name: string
-    value: Choice<Type>
+    model: ChoiceInterface
     show: boolean
   }
 
-  const props =  withDefaults(defineProps<Props<Type>>(),{
+  const props =  withDefaults(defineProps<Props>(),{
     state:'',
     name:'list-choice',
     show: false
@@ -34,27 +34,27 @@
   const emit = defineEmits(['transition-end','checked'])
   
   const choiceShowClass = computed(() => props.show ? 'choice--show':'')
-  const choiceDomElement = ref<HTMLLabelElement | null>(null);
-  const radioElement =  ref<HTMLInputElement | null>(null)
+  const choiceDomElement = ref<HTMLLabelElement>();
+  const radioElement =  ref<HTMLInputElement>()
 
   onMounted(() => {
     watch(() => props.show, newVal => {
       const transitionEndListener = () => {
-        emit('transition-end', {isShowTransition: newVal, value: props.value})
+        emit('transition-end', {isShowTransition: newVal, value: props.model})
         choiceDomElement.value?.removeEventListener('transitionend', transitionEndListener)
       }
       choiceDomElement.value?.addEventListener('transitionend', transitionEndListener)
     })
 
     watch(() => props.name, () => {
-      if (radioElement.value !== null) {
+      if (radioElement.value !== undefined) {
         radioElement.value.checked = false
       }
     })
   })
 
   const checkedEvent = () => {
-    !props.state && emit('checked', props.value)
+    !props.state && emit('checked', props.model)
   }
   
   const choiceStateClass = computed(() => props.state ? `choice--${props.state}`:'')

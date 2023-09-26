@@ -1,5 +1,5 @@
-import type { Country } from "@/models/Country";
+import type { CountryInterface } from "@/models/Country/CountryInterface";
 
 export interface CountryApiClientInterface {
-  fetchCountries: () => Promise<Country[]>
+  fetchCountries: () => Promise<CountryInterface[]>
 }
