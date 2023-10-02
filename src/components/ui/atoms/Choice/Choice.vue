@@ -1,5 +1,5 @@
 <template>
-  <label ref="choiceDomElement" :class="['choice', choiceStateClass, choiceShowClass]">
+  <label ref="labelDomElement" :class="['choice', choiceStateClass, choiceShowClass]">
     <span>
       {{ model.getLabel() }}
     </span>
@@ -15,8 +15,8 @@
 </template>
 <script setup lang="ts">
   import type { ChoiceInterface } from '@/models';
-  import type { ChoiceState } from './ChoiceState';
   import { computed, onMounted, ref, watch } from 'vue';
+  import type {ChoiceState} from './ChoiceState'
 
   interface Props {
     state: ChoiceState
@@ -34,18 +34,20 @@
   const emit = defineEmits(['transition-end','checked'])
   
   const choiceShowClass = computed(() => props.show ? 'choice--show':'')
-  const choiceDomElement = ref<HTMLLabelElement>();
+  const choiceStateClass = computed(() => props.state ? `choice--${props.state}`:'')
+
+  const labelDomElement = ref<HTMLLabelElement>()
   const radioElement =  ref<HTMLInputElement>()
 
   onMounted(() => {
     watch(() => props.show, newVal => {
       const transitionEndListener = () => {
         emit('transition-end', {isShowTransition: newVal, value: props.model})
-        choiceDomElement.value?.removeEventListener('transitionend', transitionEndListener)
+        labelDomElement.value?.removeEventListener('transitionend', transitionEndListener)
       }
-      choiceDomElement.value?.addEventListener('transitionend', transitionEndListener)
+      labelDomElement.value?.addEventListener('transitionend', transitionEndListener)
     })
-
+    
     watch(() => props.name, () => {
       if (radioElement.value !== undefined) {
         radioElement.value.checked = false
@@ -56,8 +58,6 @@
   const checkedEvent = () => {
     !props.state && emit('checked', props.model)
   }
-  
-  const choiceStateClass = computed(() => props.state ? `choice--${props.state}`:'')
   
 </script>
 
@@ -177,4 +177,3 @@
     }
   }
 </style>
-@/models/Choice/CountryChoice
