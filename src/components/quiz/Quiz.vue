@@ -4,11 +4,10 @@
       <template v-if="quiz !== null">
         <Question :question="quiz.getQuestion()"/>
         <ListChoice 
+          ref="listChoice"
           v-model="selectedValue"
-          :show="isChoicesShowed"
           :validate-choice="quiz.validateAnswer.bind(quiz)"
           :choices="quiz.getChoices()"
-          @transition-end="isChoicesTransitionEnded = !isChoicesTransitionEnded"
         />
         <Button 
           role="primary" 
@@ -28,29 +27,27 @@
   import Question from '../ui/atoms/Question.vue'
   import Button from '../ui/atoms/Button.vue'
   import { computed, onMounted, ref} from 'vue'
-  import { useToggleList } from './useToggleList'
   import type { ChoiceInterface, QuizInterface } from '@/models'
   import { useAppStore } from '@/store'
 
-  const { toggleListChoice, isChoicesShowed, isChoicesTransitionEnded } = useToggleList()
   const { quizStore } = useAppStore()
   const { actions: quizStoreActions } = quizStore
-
+  
+  const listChoice = ref<InstanceType<typeof ListChoice> | null>(null)
   const selectedValue = ref<ChoiceInterface>();
+
   const quiz = computed((): QuizInterface =>{
     return quizStore.getters.quiz as QuizInterface
   })
-
   
   onMounted(async () => {
     await quizStoreActions.loadQuiz()
-    await toggleListChoice()
   })
   
   const change = async () => {
-    await toggleListChoice()
+    await listChoice.value?.toggleList()
     await quizStoreActions.nextQuiz()
-    toggleListChoice()
+    listChoice.value?.toggleList()
   }
 
 </script>
