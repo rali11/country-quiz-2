@@ -2,7 +2,7 @@
   <Container tag="section">
     <Card ref="card" class="quiz">
       <template v-if="quiz !== null">
-        <Question :question="quiz.getQuestion()"/>
+        <Question :show="showQuestion" :question="quiz.getQuestion()"/>
         <ListChoice 
           ref="listChoice"
           v-model="selectedValue"
@@ -36,6 +36,7 @@
   const card = ref<InstanceType<typeof Card> | null>(null)
   const listChoice = ref<InstanceType<typeof ListChoice> | null>(null)
   const selectedValue = ref<ChoiceInterface>();
+  const showQuestion = ref(false)
 
   const quiz = computed((): QuizInterface =>{
     return quizStore.getters.quiz as QuizInterface
@@ -43,12 +44,15 @@
   
   onMounted(async () => {
     await quizStoreActions.loadQuiz()
+    showQuestion.value = true
     card.value?.resizeCardHeight()
   })
   
   const change = async () => {
+    showQuestion.value = false
     await listChoice.value?.toggleList()
     await quizStoreActions.nextQuiz()
+    showQuestion.value = true
     listChoice.value?.toggleList()
   }
 
