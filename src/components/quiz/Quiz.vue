@@ -1,6 +1,6 @@
 <template>
   <Container tag="section">
-    <Card class="quiz">
+    <Card ref="card" class="quiz">
       <template v-if="quiz !== null">
         <Question :question="quiz.getQuestion()"/>
         <ListChoice 
@@ -33,6 +33,7 @@
   const { quizStore } = useAppStore()
   const { actions: quizStoreActions } = quizStore
   
+  const card = ref<InstanceType<typeof Card> | null>(null)
   const listChoice = ref<InstanceType<typeof ListChoice> | null>(null)
   const selectedValue = ref<ChoiceInterface>();
 
@@ -42,6 +43,7 @@
   
   onMounted(async () => {
     await quizStoreActions.loadQuiz()
+    card.value?.resizeCardHeight()
   })
   
   const change = async () => {
@@ -63,16 +65,5 @@
       padding-top: 4.35rem;
       padding-bottom: 2rem;
     }
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all .5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    transform: translateX(-10rem);
-    opacity: 0;
   }
 </style>
