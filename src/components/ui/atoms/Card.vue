@@ -42,7 +42,7 @@ import { computed, onMounted, onUpdated, ref } from 'vue';
     padding: 2rem;
     overflow: hidden;
     height: v-bind(computedHeight);
-    transition: height 1s;
+    transition: height .5s;
 
     &__body {
       width: 100%;

@@ -9,12 +9,17 @@
           :validate-choice="quiz.validateAnswer.bind(quiz)"
           :choices="quiz.getChoices()"
         />
-        <Button 
-          role="primary" 
-          @click="change"
-        >
-          Next
-        </Button>
+        <div class="button-next">
+          <transition name="fade" mode="out-in">
+            <Button 
+              v-if="showButton"
+              role="primary" 
+              @click="change"
+            >
+              Next
+            </Button>
+          </transition>
+        </div>
       </template>
     </Card>
   </Container>
@@ -26,7 +31,7 @@
   import ListChoice from '../ui/molecules/ListChoice/ListChoice.vue'
   import Question from '../ui/atoms/Question.vue'
   import Button from '../ui/atoms/Button.vue'
-  import { computed, onMounted, ref} from 'vue'
+  import { computed, onMounted, ref, watch} from 'vue'
   import type { ChoiceInterface, QuizInterface } from '@/models'
   import { useAppStore } from '@/store'
 
@@ -37,9 +42,15 @@
   const listChoice = ref<InstanceType<typeof ListChoice> | null>(null)
   const selectedValue = ref<ChoiceInterface>();
   const showQuestion = ref(false)
+  const showButton = ref(false)
 
   const quiz = computed((): QuizInterface =>{
     return quizStore.getters.quiz as QuizInterface
+  })
+
+  watch(() => selectedValue.value, () =>{
+    showButton.value = true
+    card.value?.resizeCardHeight()
   })
   
   onMounted(async () => {
@@ -50,6 +61,7 @@
   
   const change = async () => {
     showQuestion.value = false
+    showButton.value = false
     await listChoice.value?.toggleList()
     await quizStoreActions.nextQuiz()
     showQuestion.value = true
@@ -68,6 +80,23 @@
       width: 29rem;
       padding-top: 4.35rem;
       padding-bottom: 2rem;
+
+      .button-next {
+        display: flex;
+        justify-content: end;
+        margin-top: 2rem;
+      }
     }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateX(10rem);
   }
 </style>
