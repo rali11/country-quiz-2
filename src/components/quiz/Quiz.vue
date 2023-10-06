@@ -1,6 +1,10 @@
 <template>
-  <Container tag="section">
-    <Card ref="card" class="quiz">
+  <Container tag="section" >
+    <div class="quiz-header">
+      <h2 class="quiz-header__title">COUNTRY QUIZ</h2>
+      <img class="quiz-header__image" :src="image" alt="">
+    </div>
+    <Card ref="card" class="card-quiz">      
       <template v-if="quiz !== null">
         <Question :show="showQuestion" :question="quiz.getQuestion()"/>
         <ListChoice 
@@ -34,6 +38,7 @@
   import { computed, onMounted, ref, watch} from 'vue'
   import type { ChoiceInterface, QuizInterface } from '@/models'
   import { useAppStore } from '@/store'
+  import image from '@/assets/img/undraw_adventure_4hum 1.svg';
 
   const { quizStore } = useAppStore()
   const { actions: quizStoreActions } = quizStore
@@ -74,18 +79,35 @@
   .container {
     margin: auto;
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    flex-wrap: wrap;
     color: black;
-    .quiz {
+    .card-quiz {
       width: 29rem;
       padding-top: 4.35rem;
       padding-bottom: 2rem;
+      position: relative;
 
       .button-next {
         display: flex;
         justify-content: end;
         margin-top: 2rem;
       }
+    }
+
+    .quiz-header {
+      position: relative;
+      width: 100%;
+      z-index: 1;
+
+      &__title {
+        color: variables.$text-primary-light;
+      }
+      &__image {
+      position: absolute;
+      bottom:-2.5rem;
+      right: 0;
+    }
     }
   }
 
