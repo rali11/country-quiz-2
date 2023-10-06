@@ -2,28 +2,35 @@
   <Container tag="section" >
     <div class="quiz-header">
       <h2 class="quiz-header__title">COUNTRY QUIZ</h2>
-      <img class="quiz-header__image" :src="image" alt="">
+      <Transition name="fade">
+        <img v-if="showLogoQuiz" class="quiz-header__image" :src="image" alt="">
+      </Transition>      
     </div>
-    <Card ref="card" class="card-quiz">      
+    <Card ref="card" class="card-quiz">
       <template v-if="quiz !== null">
-        <Question :show="showQuestion" :question="quiz.getQuestion()"/>
-        <ListChoice 
-          ref="listChoice"
-          v-model="selectedValue"
-          :validate-choice="quiz.validateAnswer.bind(quiz)"
-          :choices="quiz.getChoices()"
-        />
-        <div class="button-next">
-          <transition name="fade" mode="out-in">
-            <Button 
-              v-if="showButton"
-              role="primary" 
-              @click="change"
-            >
-              Next
-            </Button>
-          </transition>
-        </div>
+        <Transition name="fade" mode="out-in">
+          <Results v-if="showResults" @try-again="resetQuiz"/>     
+          <div v-else>
+            <Question :show="showQuestion" :question="quiz.getQuestion()"/>
+            <ListChoice 
+              ref="listChoice"
+              v-model="selectedValue"
+              :validate-choice="quiz.validateAnswer.bind(quiz)"
+              :choices="quiz.getChoices()"
+            />
+            <div class="button-next">
+              <Transition name="fade" mode="out-in">
+                <Button 
+                  v-if="showButton"
+                  role="primary" 
+                  @click="change"
+                >
+                  Next
+                </Button>
+              </Transition>
+            </div>
+          </div>
+        </Transition>
       </template>
     </Card>
   </Container>
@@ -39,6 +46,7 @@
   import type { ChoiceInterface, QuizInterface } from '@/models'
   import { useAppStore } from '@/store'
   import image from '@/assets/img/undraw_adventure_4hum 1.svg';
+  import Results from './Results.vue'
 
   const { quizStore } = useAppStore()
   const { actions: quizStoreActions } = quizStore
@@ -48,6 +56,8 @@
   const selectedValue = ref<ChoiceInterface>();
   const showQuestion = ref(false)
   const showButton = ref(false)
+  const showResults = ref(false)
+  const showLogoQuiz = ref(true)
 
   const quiz = computed((): QuizInterface =>{
     return quizStore.getters.quiz as QuizInterface
@@ -55,20 +65,35 @@
 
   watch(() => selectedValue.value, () =>{
     showButton.value = true
-    card.value?.resizeCardHeight()
   })
   
   onMounted(async () => {
     await quizStoreActions.loadQuiz()
     showQuestion.value = true
-    card.value?.resizeCardHeight()
   })
   
-  const change = async () => {
+  async function change (){
+    if(quiz.value.validateAnswer(selectedValue.value as ChoiceInterface)){
+      showQuestion.value = false
+      showButton.value = false
+      await listChoice.value?.toggleList()
+      await quizStoreActions.nextQuiz()
+      showQuestion.value = true
+      listChoice.value?.toggleList()
+      return
+    }
     showQuestion.value = false
     showButton.value = false
+    showLogoQuiz.value = false
     await listChoice.value?.toggleList()
-    await quizStoreActions.nextQuiz()
+    showResults.value = true
+    return
+  }
+
+  async function resetQuiz(){
+    showResults.value = false
+    showLogoQuiz.value = true
+    await quizStoreActions.loadQuiz()
     showQuestion.value = true
     listChoice.value?.toggleList()
   }
@@ -113,7 +138,7 @@
 
   .fade-enter-active,
   .fade-leave-active {
-    transition: all 0.5s ease;
+    transition: all .5s ease;
   }
 
   .fade-enter-from,

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
   const card = ref<HTMLElement | null>(null)
   const cardBody = ref<HTMLDivElement | null>(null)
@@ -18,20 +18,16 @@ import { computed, onMounted, onUpdated, ref } from 'vue';
   onMounted(() => {
     const computedStyleCard = getComputedStyle(card.value as HTMLElement)
     padding.value = parseInt(computedStyleCard.getPropertyValue('padding-top')) + parseInt(computedStyleCard.getPropertyValue('padding-bottom'))
+    setInterval(() => {
+      resizeCardHeight()
+    },100)
   })  
-
-  onUpdated(() => {
-    resizeCardHeight()
-  })
 
   function resizeCardHeight(){
     const computedStyleCardBody = getComputedStyle(cardBody.value as HTMLDivElement)
     height.value = parseInt(computedStyleCardBody.getPropertyValue('height'))
   }
   
-  defineExpose({
-    resizeCardHeight
-  })
 </script>
 
 <style lang="scss" scoped>
