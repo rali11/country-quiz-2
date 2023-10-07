@@ -32,7 +32,7 @@
 
   onMounted(() => {    
     setListChoice(props.choices)
-    toggleList()
+    //toggleList()
   })
 
   watch(() => props.choices, choices => {

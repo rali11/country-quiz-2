@@ -7,27 +7,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+  import { computed, onMounted, onUnmounted, ref } from 'vue';
 
   const card = ref<HTMLElement | null>(null)
   const cardBody = ref<HTMLDivElement | null>(null)
-  const height = ref(0)
+  const observer = ref<MutationObserver | null>(null)
+  
   const padding = ref(0)
+  const height = ref(0)
   const computedHeight = computed(() => `${height.value+padding.value}px`)
 
   onMounted(() => {
     const computedStyleCard = getComputedStyle(card.value as HTMLElement)
     padding.value = parseInt(computedStyleCard.getPropertyValue('padding-top')) + parseInt(computedStyleCard.getPropertyValue('padding-bottom'))
-    setInterval(() => {
-      resizeCardHeight()
-    },100)
+
+    const config = { attributes: true, childList: true, subtree: true }
+    observer.value = new MutationObserver(resizeCardHeight);
+    observer.value?.observe(cardBody.value as HTMLDivElement, config);
   })  
+
+  onUnmounted(() => {
+    observer.value?.disconnect()
+  })
 
   function resizeCardHeight(){
     const computedStyleCardBody = getComputedStyle(cardBody.value as HTMLDivElement)
     height.value = parseInt(computedStyleCardBody.getPropertyValue('height'))
   }
-  
 </script>
 
 <style lang="scss" scoped>

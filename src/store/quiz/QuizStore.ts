@@ -7,7 +7,7 @@ const quizState = reactive<QuizStateInterface>({
   loading:false,
   countries:[],
   quiz:null,
-  listCompletedQuiz:[]
+  listCompletedQuiz:[],
 })
 
 const actions = {

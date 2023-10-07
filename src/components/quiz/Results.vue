@@ -7,7 +7,13 @@
       <span class="results__correct-answers">{{ correctAnswers }}</span> 
       correct answers
     </p>
-    <Button class="results__cta" role="secondary" @click="$emit('try-again')">Try again</Button>
+    <Button 
+      class="results__cta" 
+      role="secondary" 
+      @click="$emit('try-again')"
+    >
+      Try again
+    </Button>
   </div>
 </template>
 
@@ -21,6 +27,7 @@ defineEmits(['try-again'])
 
 const { quizStore } = useAppStore()
 
+
 const correctAnswers = computed(() => {
   return quizStore.getters.lenghtCompletedQuiz-1
 })
@@ -31,6 +38,7 @@ const correctAnswers = computed(() => {
 <style lang="scss" scoped>
   @use "@/assets/styles/settings/variables";
   .results {
+    height: 461px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,5 +65,16 @@ const correctAnswers = computed(() => {
     &__image-winner {
       margin-bottom: 4rem;
     }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all .7s ease .5s;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateY(10rem);
   }
 </style>
