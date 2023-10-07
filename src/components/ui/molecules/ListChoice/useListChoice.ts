@@ -41,7 +41,7 @@ export const useListChoice = () => {
         setTimeout(() => {
           if (isToggleTransitionEnded.value) return resolve()
           loop()
-        },100)
+        },10)
       })()
     })
   }

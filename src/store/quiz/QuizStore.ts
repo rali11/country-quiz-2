@@ -7,12 +7,13 @@ const quizState = reactive<QuizStateInterface>({
   loading:false,
   countries:[],
   quiz:null,
-  listCompletedQuiz:[]
+  listCompletedQuiz:[],
 })
 
 const actions = {
   async loadQuiz(){
     quizState.loading = true
+    quizState.listCompletedQuiz = []
     quizState.countries = []
     quizState.countries = await apiClient.country.fetchCountries()
     quizState.loading = false
@@ -36,6 +37,9 @@ const getters = {
   },
   get loading(){
     return quizState.loading
+  },
+  get lenghtCompletedQuiz(){
+    return quizState.listCompletedQuiz.length
   }
 }
 
