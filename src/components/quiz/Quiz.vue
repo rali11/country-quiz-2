@@ -48,7 +48,7 @@
   })
   
   onMounted(async () => {
-    await quizStoreActions.loadQuiz()
+    await quizStoreActions.nextQuiz()
     setTimeout(() => {
       showQuestion.value = true
       listChoice.value?.toggleList()
