@@ -9,18 +9,22 @@
 <script setup lang="ts">
   import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-  const card = ref<HTMLElement | null>(null)
+  interface Props {
+    height: number
+  }
+
+  const props = defineProps<Props>()
+
   const cardBody = ref<HTMLDivElement | null>(null)
   const observer = ref<MutationObserver | null>(null)
   
-  const padding = ref(0)
+  const padding = 64+69.6
   const height = ref(0)
-  const computedHeight = computed(() => `${height.value+padding.value}px`)
+  const computedHeight = computed(() => {
+    return `${(height.value ? height.value : props.height)+padding}px`
+  })
 
   onMounted(() => {
-    const computedStyleCard = getComputedStyle(card.value as HTMLElement)
-    padding.value = parseInt(computedStyleCard.getPropertyValue('padding-top')) + parseInt(computedStyleCard.getPropertyValue('padding-bottom'))
-
     const config = { attributes: true, childList: true, subtree: true }
     observer.value = new MutationObserver(resizeCardHeight);
     observer.value?.observe(cardBody.value as HTMLDivElement, config);
@@ -34,6 +38,7 @@
     const computedStyleCardBody = getComputedStyle(cardBody.value as HTMLDivElement)
     height.value = parseInt(computedStyleCardBody.getPropertyValue('height'))
   }
+
 </script>
 
 <style lang="scss" scoped>
@@ -41,7 +46,11 @@
   .card {
     border-radius: 24px;
     background-color: variables.$bg-lighter;
-    padding: 2rem;
+    width: 29rem;
+    padding-top: 4.35rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
     overflow: hidden;
     height: v-bind(computedHeight);
     transition: height .5s;

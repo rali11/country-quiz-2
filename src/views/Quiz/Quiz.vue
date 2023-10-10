@@ -4,10 +4,18 @@
       <h2 class="quiz-header__title">COUNTRY QUIZ</h2>
       <img class="quiz-header__image" :src="image" alt="">
     </div>
-    <Card ref="card" class="card-quiz">
+    <Card :height="cardHeight" ref="card" class="card-quiz">
       <Transition name="fade" mode="out-in">
-        <Results v-if="isShowResults" @try-again="tryAgain"/>
-        <Quiz v-else @show-results="showResults"/>      
+        <div class="quiz__loader" v-if="isLoading && !isShowResults">
+          <Loader :size="loaderSize"/>
+          <h2>Loading...</h2>
+        </div>
+        <div v-else>
+          <Transition name="fade-slide" mode="out-in" tag="div">
+            <Results v-if="isShowResults" @try-again="tryAgain"/>
+            <Quiz v-else @show-results="showResults"/>      
+          </Transition>
+        </div>
       </Transition>
     </Card>
   </Container>
@@ -19,12 +27,29 @@
   import image from '@/assets/img/undraw_adventure_4hum 1.svg';
   import Quiz from '@/components/quiz/Quiz.vue';
   import Results from '@/components/quiz/Results.vue';
-  import { ref } from 'vue';
+  import { computed, onMounted, ref, watch } from 'vue';
+  import { useAppStore } from '@/store';
+  import Loader from '@/components/ui/atoms/Loader.vue';
 
   const isShowResults = ref(false)
+  const isLoading = ref(true)
+  const { quizStore } = useAppStore()
+  const { actions: quizStoreActions } = quizStore
+  const cardHeight = ref(300)
+  const computedCardHeight = computed(() => `${cardHeight.value}px`)
+  const loaderSize = ref(82)
 
-  function tryAgain(){
+  watch(() => quizStore.getters.loading, loading => {
+    isLoading.value = loading
+  })
+
+  onMounted(() => {
+    quizStoreActions.loadQuiz()
+  })
+
+  async function tryAgain(){
     isShowResults.value = false
+    await quizStoreActions.loadQuiz()
   }
 
   function showResults(){
@@ -40,10 +65,7 @@
     justify-content: start;
     flex-wrap: wrap;
     color: black;
-    .card-quiz {
-      width: 29rem;
-      padding-top: 4.35rem;
-      padding-bottom: 2rem;
+    .card-quiz {      
       position: relative;
     }
 
@@ -55,22 +77,45 @@
       &__title {
         color: variables.$text-primary-light;
       }
+      
       &__image {
-      position: absolute;
-      bottom:-2.5rem;
-      right: 0;
+        position: absolute;
+        bottom:-2.5rem;
+        right: 0;
+      }
     }
+    .quiz__loader{
+      height: v-bind(computedCardHeight);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      color: variables.$text-primary;
     }
+  }
+
+  .fade-slide-enter-active,
+  .fade-slide-leave-active {
+    transition: all .8s ease;
+  }
+
+  .fade-slide-enter-from,
+  .fade-slide-leave-to {
+    opacity: 0;
+    transform: translateX(10rem);
   }
 
   .fade-enter-active,
   .fade-leave-active {
-    transition: all .8s ease;
+    transition: all .5s ease;
   }
 
   .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
-    transform: translateX(10rem);
   }
+
+
 </style>

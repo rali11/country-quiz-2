@@ -4,10 +4,10 @@ import { apiClient } from "@/api-client";
 import { getQuiz } from "@/services/models/Quiz";
 
 const quizState = reactive<QuizStateInterface>({
-  loading:false,
   countries:[],
   quiz:null,
   listCompletedQuiz:[],
+  loading:true
 })
 
 const actions = {
@@ -15,9 +15,10 @@ const actions = {
     quizState.loading = true
     quizState.listCompletedQuiz = []
     quizState.countries = []
-    quizState.countries = await apiClient.country.fetchCountries()
-    quizState.loading = false
-    this.nextQuiz()
+    setTimeout(async () => {
+      quizState.countries = await apiClient.country.fetchCountries()
+      quizState.loading = false
+    },1500)
   },
   async nextQuiz () {
     quizState.quiz = getQuiz(quizState.countries)
@@ -26,9 +27,6 @@ const actions = {
     }
     quizState.listCompletedQuiz.push(quizState.quiz)
   },
-  async reset(){
-    await this.loadQuiz()
-  }
 }
 
 const getters = {

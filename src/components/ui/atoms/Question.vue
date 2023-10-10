@@ -1,7 +1,7 @@
 <template>
   <div :class="['question', showClass]">
     <div class="question__loader" v-if="loading">
-      <span class="loader"></span>
+      <Loader />
     </div>
     <img v-else class="question__flag-img" v-show="question.urlImg" :src="image" alt="">
     <h3>{{ question.question }}</h3>
@@ -11,6 +11,7 @@
 <script setup lang="ts">
   import type { QuestionInterface } from '@/models';
   import { computed, onMounted, ref, watch } from 'vue';
+  import Loader from './Loader.vue';
 
   interface Props {
     question: QuestionInterface
@@ -40,7 +41,6 @@
     const response = await fetch(urlImg)
     const blob = await response.blob()
     image.value = URL.createObjectURL(blob);
-    console.log(image.value)
     loading.value = false
   }
 
@@ -83,25 +83,4 @@
       opacity: 1;
     }
   }
-
-  .loader {
-    width: 32px;
-    height: 32px;
-    border: 4px solid variables.$border-loader-question;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation .8s linear infinite;
-  }
-
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  } 
-
 </style>
