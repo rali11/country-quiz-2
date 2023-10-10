@@ -11,7 +11,7 @@
           <h2>Loading...</h2>
         </div>
         <div v-else>
-          <Transition name="fade-slide" mode="out-in" tag="div">
+          <Transition name="fade-slide" mode="out-in">
             <Results v-if="isShowResults" @try-again="tryAgain"/>
             <Quiz v-else @show-results="showResults"/>      
           </Transition>
