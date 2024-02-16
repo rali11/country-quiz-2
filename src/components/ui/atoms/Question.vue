@@ -58,18 +58,15 @@
       height: 3.37rem;
       filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
       border-radius: 4px;  
-      margin-bottom:1rem;
     }
 
     &__loader {
       width: 5.25rem;
-      height: 3.37rem;
+      height: 3.883rem;
       border-radius: 4px;  
-      margin-bottom:1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-
     }
     
     h3 {
