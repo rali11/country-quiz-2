@@ -36,6 +36,10 @@
     }
   })
 
+  watch(() => props.show, show => {
+    loading.value = !!(show && props.question.urlImg)
+  })
+
   async function loadImage(urlImg: string){
     loading.value = true
     const response = await fetch(urlImg)
