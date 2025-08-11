@@ -5,7 +5,7 @@ import type { CountryInterface } from "@/models/Country/CountryInterface";
 const options: CountryApiClientOptions = {
   endpoints: {
     async fetchCountries(): Promise<CountryInterface[]>{
-      const response = await fetch('https://restcountries.com/v3.1/all');
+      const response = await fetch('https://restcountries.com/v3.1/all?fields=name,capital,flags');
       if (!response.ok) throw new Error(response.statusText);
       const json = await response.json() as RESTCountries[];
       return json.filter(filterCapital).map(getListCountries);
